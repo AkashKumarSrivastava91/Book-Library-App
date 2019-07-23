@@ -22,17 +22,18 @@ module.exports = function localStrategy() {
                 const user = await col.findOne({ email: username });
                 debug(user);
                 if (!user) {
-                    done(null, false);
+                    done(null, false, { message: 'User not found. Please signup.' });
                 }
 
                 if (user.password === password) {
                     debug('password matched');
                     done(null, user);
                 } else {
-                    done(null, false);
+                    done(null, false, { message: 'Invalid password. Please try again.' });
                 }
             } catch (err) {
                 debug(err.stack);
+                done(err);
             }
             // Close connection
             client.close();
