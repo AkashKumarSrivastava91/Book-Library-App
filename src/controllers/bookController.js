@@ -1,5 +1,6 @@
 const { MongoClient, ObjectID } = require('mongodb');
 const debug = require('debug')('app:bookController');
+const bookService = require('../services/goodreadservice')();
 
 
 function bookController(nav) {
@@ -47,7 +48,7 @@ function bookController(nav) {
                 const db = client.db(dbName);
                 const col = await db.collection('books');
                 const book = await col.findOne({ _id: ObjectID(id) });
-                debug(book);
+                book.details = await bookService.getBookDetailsByBookId(book.bookId);
 
                 res.render(
                     'bookView',

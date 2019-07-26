@@ -22,6 +22,7 @@ module.exports = function localStrategy() {
                 const user = await col.findOne({ email: username });
                 debug(user);
                 if (!user) {
+                    debug('User not found. Please signup.');
                     done(null, false, { message: 'User not found. Please signup.' });
                 }
 
@@ -29,6 +30,7 @@ module.exports = function localStrategy() {
                     debug('password matched');
                     done(null, user);
                 } else {
+                    debug('Invalid password. Please try again.');
                     done(null, false, { message: 'Invalid password. Please try again.' });
                 }
             } catch (err) {
